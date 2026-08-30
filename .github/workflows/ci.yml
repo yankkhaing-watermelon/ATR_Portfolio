@@ -1,0 +1,22 @@
+name: Validate ATR Portfolio
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check Worker syntax
+        run: node --check worker/index.js
+      - name: Check PWA scripts
+        run: |
+          node --check public/app.js
+          node --check public/manage.js
+          node --check public/phase3-ui.js
