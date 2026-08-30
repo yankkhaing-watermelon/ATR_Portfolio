@@ -10,7 +10,7 @@ Mobile-first Bursa Malaysia portfolio, ATR risk and sell-signal terminal.
 - Deploy command: `npx wrangler deploy`
 - Root path: `/`
 
-Static assets are configured in `wrangler.jsonc`. Phase 1 contains the installable PWA interface with demonstration data. Cloudflare D1 and live portfolio APIs are added in Phase 2.
+Static assets are configured in `wrangler.jsonc`. Phase 1 provides the installable PWA interface. Phase 2 adds the Worker API, Cloudflare D1 binding, database migration, and D1-backed portfolio state.
 
 ## Local preview
 
