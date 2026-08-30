@@ -3,6 +3,7 @@ const num = value => Number.isFinite(Number(value)) ? Number(value) : 0;
 const rm = value => `RM ${num(value).toLocaleString("en-MY",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 let serverMutationEnabled = false;
 let currentState = null;
+let marketStatus = {};
 
 function setResult(message, tone = "") {
   const bar = $("result-bar");
@@ -36,18 +37,30 @@ async function api(path, options = {}, auth = false) {
   return payload;
 }
 
+function formatSyncTime(value) {
+  if (!value) return "Not run yet";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("en-MY", {dateStyle:"medium", timeStyle:"short"});
+}
+
+function updateMarketStatus() {
+  $("market-last-sync").textContent = formatSyncTime(marketStatus.market_last_sync);
+}
+
 async function checkHealth() {
   try {
     const payload = await api("/api/health");
     serverMutationEnabled = Boolean(payload.mutation_enabled);
-    $("manage-status").textContent = payload.schema_ready ? "D1 live · Phase 2B" : "D1 schema not ready";
-    $("manage-version").textContent = `v${payload.version || "2.x"}`;
+    marketStatus = payload.market_sync || {};
+    $("manage-status").textContent = payload.schema_ready ? `D1 live · Phase ${payload.phase || 3}` : "D1 schema not ready";
+    $("manage-version").textContent = `v${payload.version || "3.x"}`;
     $("lock-state").innerHTML = serverMutationEnabled
       ? "<b class=\"good\">Enabled</b><span>Protected writes</span>"
       : "<b class=\"bad\">Locked</b><span>Protected writes</span>";
     $("token-help").innerHTML = serverMutationEnabled
       ? "Cloudflare protected writes are enabled. Enter the same <b>ADMIN_TOKEN</b> value above to authorize this browser tab."
       : "Add an <b>ADMIN_TOKEN</b> secret in Cloudflare → Worker → Settings → Variables and Secrets, then redeploy. No Wrangler command is required.";
+    updateMarketStatus();
     updateTokenUi();
   } catch (error) {
     $("manage-status").textContent = "D1 health check failed";
@@ -85,6 +98,35 @@ async function loadState() {
     updateTokenUi();
   } catch (error) {
     setResult(`State load failed: ${error.message}`, "error");
+  }
+}
+
+function renderMarketSync(data) {
+  const box = $("market-sync-result");
+  const successes = data.results || [];
+  const failures = data.errors || [];
+  const rows = successes.map(row => `<div class="activity-item"><div><b>${row.code} · ${row.latest_date}</b><small>${row.provider_symbol} · ${row.source}</small></div><p>Close ${rm(row.close)} · ATR14 ${row.atr14 == null ? "—" : rm(row.atr14)} · MA10 ${row.ma10 == null ? "—" : rm(row.ma10)} · ${row.bars_saved} bars</p></div>`)
+    .concat(failures.map(row => `<div class="activity-item"><div><b>${row.code} · Failed</b><small>Market-data error</small></div><p>${row.error}</p></div>`));
+  box.innerHTML = rows.length ? rows.join("") : '<div class="empty-small">No holdings were available to synchronize.</div>';
+}
+
+async function syncMarketData() {
+  if (!serverMutationEnabled) throw new Error("Protected writes are disabled. Add ADMIN_TOKEN in Cloudflare first.");
+  if (!(currentState?.holdings || []).length) throw new Error("No portfolio holdings are available to synchronize.");
+  const button = $("sync-market");
+  button.disabled = true;
+  const original = button.textContent;
+  button.textContent = "Syncing…";
+  setResult(`Synchronizing market data for ${(currentState.holdings || []).length} holding${(currentState.holdings || []).length === 1 ? "" : "s"}…`);
+  try {
+    const payload = await api("/api/market/sync", {method:"POST"}, true);
+    const data = payload.data || {};
+    renderMarketSync(data);
+    await Promise.all([loadState(), checkHealth()]);
+    setResult(`Market sync complete: ${data.succeeded || 0} succeeded, ${data.failed || 0} failed. Market value is now recalculated from synchronized closes.`, data.failed ? "error" : "ok");
+  } finally {
+    button.disabled = false;
+    button.textContent = original;
   }
 }
 
@@ -186,11 +228,12 @@ $("save-token").onclick = () => {
   if (!value) return setResult("Enter ADMIN_TOKEN first.", "error");
   sessionStorage.setItem("atr-admin-token", value);
   updateTokenUi();
-  setResult("ADMIN_TOKEN stored for this browser tab. It will be verified on the next write.", "ok");
+  setResult("ADMIN_TOKEN stored for this browser tab. It will be verified on the next protected write.", "ok");
 };
 $("clear-token").onclick = () => { sessionStorage.removeItem("atr-admin-token"); $("admin-token").value = ""; updateTokenUi(); setResult("Token cleared from this tab."); };
 $("reload-state").onclick = loadState;
 $("reload-activity").onclick = loadState;
+$("sync-market").onclick = () => syncMarketData().catch(error => setResult(error.message, "error"));
 $("add-row").onclick = () => addRow();
 $("import-portfolio").onclick = () => importPortfolio().catch(error => setResult(error.message, "error"));
 $("tx-type").onchange = updateTransactionFields;
