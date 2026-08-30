@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071625"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/manage.css">
+<title>Portfolio Analytics · ATR Portfolio</title>
+</head>
+<body><div class="shell manage-shell">
+<header class="topbar"><div class="topline"><div class="brand"><div class="mark">↗<span>MK</span></div><div><b>Bursa MusangKing</b><small>Phase 7 · Portfolio Analytics</small></div></div><div class="actions"><button onclick="location.href='/'">← Portfolio</button><button onclick="location.href='/chart.html'">▥ Charts</button><button onclick="location.href='/signals.html'">⚑ Signals</button><button id="theme">☀</button></div></div><div class="status"><span><i></i><b id="status">Loading…</b></span><time id="version">Phase 7</time></div></header>
+<main class="manage-main">
+<section class="manage-hero"><div><span class="eyebrow">PHASE 7</span><h1>Portfolio Analytics</h1><p>Performance, drawdown, concentration, sector allocation, portfolio heat and realised trade statistics from D1.</p></div><div class="lock-state"><b id="equity">—</b><span>Total equity</span></div></section>
+<section class="manage-card setup-card"><div class="manage-card-head"><div><span class="step">1</span><h2>Portfolio snapshot</h2></div><button class="mini-btn" id="reload">↻ Refresh</button></div><div class="summary-grid" id="summary"></div></section>
+<section class="manage-grid">
+<article class="manage-card"><div class="manage-card-head"><div><span class="step">2</span><h2>Performance</h2></div><span class="pill">Closed SELLs</span></div><div class="summary-grid" id="performance"></div><div class="notice" id="perf-note"></div></article>
+<article class="manage-card"><div class="manage-card-head"><div><span class="step">3</span><h2>Concentration</h2></div><span class="pill">Current</span></div><div class="summary-grid" id="concentration"></div></article>
+</section>
+<section class="manage-card setup-card"><div class="manage-card-head"><div><span class="step">4</span><h2>Equity & portfolio heat</h2></div><span class="pill" id="snapshot-count">0 snapshots</span></div><canvas id="equity-chart" height="300" style="width:100%;max-width:100%;background:var(--surface2);border-radius:14px"></canvas></section>
+<section class="manage-grid">
+<article class="manage-card"><div class="manage-card-head"><div><span class="step">5</span><h2>Sector allocation</h2></div></div><div class="activity-list" id="sectors"></div></article>
+<article class="manage-card"><div class="manage-card-head"><div><span class="step">6</span><h2>Contributors</h2></div></div><div class="activity-list" id="contributors"></div></article>
+</section>
+<section class="manage-card setup-card"><div class="manage-card-head"><div><span class="step">7</span><h2>SELL performance history</h2></div><span class="pill" id="sell-count">0</span></div><div class="activity-list" id="sells"></div></section>
+<div class="result-bar" id="result"><span>Ready.</span></div>
+</main></div><script src="/analytics.js" defer></script></body></html>
