@@ -1,0 +1,11 @@
+{
+  "name": "ATR Portfolio · Bursa MusangKing",
+  "short_name": "ATR Portfolio",
+  "description": "Bursa portfolio, ATR risk and sell-signal terminal",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#06121d",
+  "theme_color": "#071625",
+  "icons": [{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
