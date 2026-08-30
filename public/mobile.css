@@ -1,0 +1,32 @@
+/* Phone-first overrides for ATR Portfolio PWA */
+html,body{max-width:100%;overflow-x:hidden}body{-webkit-text-size-adjust:100%;touch-action:manipulation}.shell{width:100%;min-width:0}.topline,.status,#app,.bottom-nav{max-width:100%}.actions{min-width:0}.pwa-install.ready{border-color:color-mix(in srgb,var(--green) 55%,var(--line));color:var(--green)}
+.pwa-install-help{position:fixed;inset:0;z-index:1000;display:grid;place-items:end center;padding:18px;background:#0008;backdrop-filter:blur(8px)}.pwa-install-help[hidden]{display:none}.pwa-install-card{position:relative;width:min(430px,100%);padding:22px;border:1px solid var(--line);border-radius:24px;background:var(--surface);box-shadow:0 24px 80px #0008}.pwa-install-card h2{margin:14px 0 8px;font-size:22px}.pwa-install-card p{margin:0;color:var(--text);font-size:14px;line-height:1.55}.pwa-install-card small{display:block;margin-top:10px;color:var(--muted);line-height:1.45}.pwa-close{position:absolute;top:12px;right:12px;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:var(--surface2);font-size:22px}.pwa-install-icon{position:relative;display:grid;place-items:center;width:56px;height:56px;border-radius:17px;background:linear-gradient(145deg,#123d66,#1686bd);color:#fff;font-size:30px;font-weight:900}.pwa-install-icon span{position:absolute;top:-5px;left:-5px;display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#f3cb41;color:#17334b;border:2px solid var(--surface);font-size:8px}.pwa-got-it{margin-top:18px}
+@media(max-width:700px){
+  .shell{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  .topbar{padding-top:env(safe-area-inset-top)}
+  .topline{display:block;padding:10px 10px 8px}
+  .brand{min-width:0}.brand>div:last-child{min-width:0}.brand b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand small{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mark{width:38px;height:38px;border-radius:11px;font-size:22px;flex:0 0 auto}
+  .actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;margin-top:9px}
+  .actions button{min-width:0;min-height:38px;padding:0 5px;border-radius:10px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .actions button span{display:inline}
+  .status{padding:0 10px 8px;font-size:10px;gap:8px}.status>*{min-width:0}.status b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.status time{flex:0 0 auto}
+  #app{padding:10px}
+  .equity{padding:14px;border-radius:18px}.equity-top{gap:10px}.equity-top>div:first-child{min-width:0}.equity-top strong{font-size:23px}.stamp{width:72px;flex:0 0 72px}
+  .equity-metrics,.risk-grid,.metric-grid,.performance{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .equity-metrics .metric,.performance .metric{padding:9px}.metric strong{font-size:12px;overflow-wrap:anywhere}
+  .section-title{margin:16px 2px 8px}.section-title h2{font-size:16px}
+  .card,.allocation,.journal,.settings{padding:12px;border-radius:15px}.card-heading{gap:7px}.card-heading>div{min-width:0}.card h3{font-size:14px;overflow-wrap:anywhere}.risk-badge{flex:0 0 auto}
+  .metric-grid{gap:10px 7px}.card-footer{display:block}.card-footer div{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:9px}.card-footer button{width:100%;margin:0;min-height:36px}
+  .page-heading{display:block;margin:4px 0 12px}.page-heading h1{font-size:22px}.page-heading button{width:100%;margin-top:9px}
+  .market-search{grid-template-columns:1fr}.market-search>button{width:100%}
+  .filters{overflow:hidden}.filters button{font-size:10px}
+  .popular{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .allocation>div{grid-template-columns:78px minmax(0,1fr) 38px;gap:7px}.allocation>div span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .signal-stats,.journal>div{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bottom-nav{left:0;right:0;bottom:0;transform:none;width:100%;border-left:0;border-right:0;border-radius:14px 14px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+  .bottom-nav button{min-width:0;padding:8px 1px 7px;font-size:8px}.bottom-nav button b{font-size:16px}
+  canvas{max-width:100%!important}
+  table{max-width:100%}
+}
+@media(max-width:390px){.actions{grid-template-columns:repeat(3,minmax(0,1fr))}.brand small{max-width:250px}.equity-metrics,.risk-grid,.metric-grid,.performance{grid-template-columns:1fr 1fr}.pwa-install-card{padding:19px}.pwa-install-help{padding:10px}.bottom-nav button{font-size:7.5px}}
