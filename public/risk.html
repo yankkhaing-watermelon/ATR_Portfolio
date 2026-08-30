@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071625">
+  <meta name="description" content="ATR risk and sell-signal control console">
+  <link rel="icon" href="/icon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/manage.css">
+  <title>ATR Risk · Bursa MusangKing</title>
+</head>
+<body>
+<div class="shell manage-shell">
+  <header class="topbar">
+    <div class="topline">
+      <div class="brand"><div class="mark">↗<span>MK</span></div><div><b>Bursa MusangKing</b><small>ATR Portfolio · Risk Control</small></div></div>
+      <div class="actions"><button id="theme" aria-label="Toggle theme">☀</button><button type="button" onclick="location.href='/manage.html'">⚙ Manage</button><button class="primary" type="button" onclick="location.href='/'">← Portfolio</button></div>
+    </div>
+    <div class="status"><span><i></i><b id="risk-status">Checking Phase 4…</b></span><time id="risk-version">v4.0.0</time></div>
+  </header>
+  <main class="manage-main">
+    <section class="manage-hero">
+      <div><span class="eyebrow">PHASE 4</span><h1>ATR risk & sell-signal engine</h1><p>Completed daily closes are converted into transparent warning, partial-exit and sell levels. The engine records risk snapshots and signal-state changes in D1.</p></div>
+      <div class="lock-state"><b id="engine-state">Checking…</b><span>Risk engine</span></div>
+    </section>
+
+    <section class="manage-grid">
+      <article class="manage-card">
+        <div class="manage-card-head"><div><span class="step">1</span><h2>Admin access</h2></div><span class="pill" id="token-pill">Locked</span></div>
+        <p class="muted">Use the same Cloudflare ADMIN_TOKEN. It stays only in this browser tab.</p>
+        <label class="field"><span>ADMIN_TOKEN</span><input id="admin-token" type="password" autocomplete="off" placeholder="Enter ADMIN_TOKEN"></label>
+        <div class="button-row"><button class="primary-btn" id="save-token">Unlock this tab</button><button class="secondary-btn" id="clear-token">Clear</button></div>
+      </article>
+      <article class="manage-card summary-card">
+        <div class="manage-card-head"><div><span class="step">2</span><h2>Current risk state</h2></div><button class="mini-btn" id="reload">Refresh</button></div>
+        <div class="summary-grid"><div><span>Safe</span><b id="safe-count">0</b></div><div><span>Watch</span><b id="watch-count">0</b></div><div><span>Partial</span><b id="partial-count">0</b></div><div><span>Sell</span><b id="sell-count">0</b></div></div>
+        <p class="muted" id="last-run">Risk engine has not run yet.</p>
+      </article>
+    </section>
+
+    <section class="manage-card setup-card">
+      <div class="manage-card-head"><div><span class="step">3</span><h2>Risk rules</h2></div><span class="pill good">atr-risk-v1</span></div>
+      <div class="summary-grid phase3-summary">
+        <div><span>Initial floor</span><b>Average cost − 2 ATR</b></div>
+        <div><span>Watch</span><b>Peak − 1.5 ATR / below MA10</b></div>
+        <div><span>Partial</span><b>Peak − 2 ATR</b></div>
+        <div><span>ATR trail</span><b>Peak − 3 ATR</b></div>
+      </div>
+      <div class="notice">Active sell stop = the highest of your manual hard stop, the automatic 2 ATR initial floor, and the 3 ATR trailing stop. Partial and Watch are alerts only; the app does not place trades automatically.</div>
+      <div class="button-row split"><div class="notice market-note">Risk runs automatically after each Phase 3 market-data sync and on the weekday scheduled refresh.</div><button class="primary-btn" id="run-risk">⚠ Run risk engine now</button></div>
+    </section>
+
+    <section class="manage-card setup-card">
+      <div class="manage-card-head"><div><span class="step">4</span><h2>Holdings risk map</h2></div><button class="mini-btn" id="reload-holdings">Refresh</button></div>
+      <div id="risk-list" class="activity-list"><div class="empty-small">Loading risk data…</div></div>
+    </section>
+    <section class="result-bar" id="result-bar" aria-live="polite"><span>Ready.</span></section>
+    <p class="disclaimer">Risk states are mechanical portfolio controls based on completed daily market data. They are not forecasts or personalized investment recommendations.</p>
+  </main>
+</div>
+<script src="/risk.js" defer></script>
+</body>
+</html>
