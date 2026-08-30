@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071625">
+  <meta name="description" content="Manage Bursa MusangKing ATR Portfolio records">
+  <link rel="icon" href="/icon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/manage.css">
+  <title>Manage Portfolio · Bursa MusangKing</title>
+</head>
+<body>
+  <div class="shell manage-shell">
+    <header class="topbar">
+      <div class="topline">
+        <div class="brand"><div class="mark">↗<span>MK</span></div><div><b>Bursa MusangKing</b><small>ATR Portfolio · Management Console</small></div></div>
+        <div class="actions"><button id="theme" aria-label="Toggle theme">☀</button><button class="primary" id="back">← Portfolio</button></div>
+      </div>
+      <div class="status"><span><i></i><b id="manage-status">Checking D1…</b></span><time id="manage-version">Phase 2B</time></div>
+    </header>
+
+    <main class="manage-main">
+      <section class="manage-hero">
+        <div>
+          <span class="eyebrow">PHASE 2B</span>
+          <h1>Portfolio setup & transactions</h1>
+          <p>Import your opening portfolio, then record future buys, sells, cash movements and dividends. Protected writes require your Cloudflare ADMIN_TOKEN.</p>
+        </div>
+        <div class="lock-state" id="lock-state"><b>Checking…</b><span>Protected writes</span></div>
+      </section>
+
+      <section class="manage-grid">
+        <article class="manage-card">
+          <div class="manage-card-head"><div><span class="step">1</span><h2>Admin access</h2></div><span class="pill" id="token-pill">Locked</span></div>
+          <p class="muted">The token is never stored in GitHub or the page source. This page keeps it only in this browser tab using session storage.</p>
+          <label class="field"><span>ADMIN_TOKEN</span><input id="admin-token" type="password" autocomplete="off" placeholder="Enter the Cloudflare secret value"></label>
+          <div class="button-row"><button class="primary-btn" id="save-token">Unlock this tab</button><button class="secondary-btn" id="clear-token">Clear</button></div>
+          <div class="notice" id="token-help">If protected writes are disabled, first add an <b>ADMIN_TOKEN</b> secret in Cloudflare → Worker → Settings → Variables and Secrets, then redeploy.</div>
+        </article>
+
+        <article class="manage-card summary-card">
+          <div class="manage-card-head"><div><span class="step">2</span><h2>Current D1 state</h2></div><button class="mini-btn" id="reload-state">Refresh</button></div>
+          <div class="summary-grid">
+            <div><span>Cash</span><b id="sum-cash">RM 0.00</b></div>
+            <div><span>Holdings</span><b id="sum-holdings">0</b></div>
+            <div><span>Market value</span><b id="sum-value">RM 0.00</b></div>
+            <div><span>Total equity</span><b id="sum-equity">RM 0.00</b></div>
+          </div>
+          <p class="muted" id="state-note">Loading portfolio state…</p>
+        </article>
+      </section>
+
+      <section class="manage-card setup-card">
+        <div class="manage-card-head"><div><span class="step">3</span><h2>Opening portfolio setup</h2></div><span class="pill">One-time import</span></div>
+        <p class="muted">Use this for the portfolio you already own today. It sets opening cash and imports current positions without inventing historical buy transactions.</p>
+        <div class="setup-top">
+          <label class="field"><span>Opening cash balance (RM)</span><input id="opening-cash" type="number" min="0" step="0.01" value="0"></label>
+          <div class="setup-note">Current positions should use your actual share quantity and average cost. Current price may be entered now and will later be replaced by automated market data.</div>
+        </div>
+        <div class="holdings-table-wrap">
+          <table class="holdings-table">
+            <thead><tr><th>Code</th><th>Company</th><th>Sector</th><th>Shares</th><th>Avg cost</th><th>Current</th><th>Hard stop</th><th></th></tr></thead>
+            <tbody id="opening-rows"></tbody>
+          </table>
+        </div>
+        <div class="button-row split"><button class="secondary-btn" id="add-row">＋ Add holding</button><button class="primary-btn" id="import-portfolio">Import opening portfolio</button></div>
+      </section>
+
+      <section class="manage-grid lower-grid">
+        <article class="manage-card">
+          <div class="manage-card-head"><div><span class="step">4</span><h2>Record transaction</h2></div><span class="pill">Live D1</span></div>
+          <label class="field"><span>Type</span><select id="tx-type"><option>BUY</option><option>SELL</option><option>DEPOSIT</option><option>WITHDRAWAL</option><option>DIVIDEND</option><option>ADJUSTMENT</option></select></label>
+          <div id="trade-fields" class="form-grid">
+            <label class="field"><span>Bursa code</span><input id="tx-code" placeholder="e.g. 1155"></label>
+            <label class="field"><span>Company name</span><input id="tx-name" placeholder="Company name"></label>
+            <label class="field"><span>Sector</span><input id="tx-sector" placeholder="Finance, Energy…"></label>
+            <label class="field"><span>Shares</span><input id="tx-shares" type="number" min="0" step="1"></label>
+            <label class="field"><span>Price (RM)</span><input id="tx-price" type="number" min="0" step="0.001"></label>
+            <label class="field"><span>Fees (RM)</span><input id="tx-fees" type="number" min="0" step="0.01" value="0"></label>
+          </div>
+          <div id="cash-fields" class="form-grid hidden">
+            <label class="field"><span>Amount (RM)</span><input id="tx-amount" type="number" step="0.01"></label>
+          </div>
+          <div class="form-grid">
+            <label class="field"><span>Trade date</span><input id="tx-date" type="date"></label>
+            <label class="field grow"><span>Notes</span><input id="tx-notes" placeholder="Optional note"></label>
+          </div>
+          <button class="primary-btn full" id="record-transaction">Save transaction</button>
+        </article>
+
+        <article class="manage-card">
+          <div class="manage-card-head"><div><span class="step">5</span><h2>Recent activity</h2></div><button class="mini-btn" id="reload-activity">Refresh</button></div>
+          <div id="recent-activity" class="activity-list"><div class="empty-small">No transactions yet.</div></div>
+        </article>
+      </section>
+
+      <section class="result-bar" id="result-bar" aria-live="polite"><span>Ready.</span></section>
+      <p class="disclaimer">Opening positions are a starting-state import. Future BUY/SELL/cash transactions are written to D1 and update the portfolio ledger. Market prices remain manual until the market-data phase is connected.</p>
+    </main>
+  </div>
+  <script src="/manage.js" defer></script>
+</body>
+</html>
