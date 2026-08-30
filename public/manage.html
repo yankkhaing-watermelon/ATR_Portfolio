@@ -2,12 +2,17 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#071625">
   <meta name="description" content="Manage Bursa MusangKing ATR Portfolio records">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/icon.svg">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/manage.css">
+  <link rel="stylesheet" href="/mobile.css">
   <title>Manage Portfolio · Bursa MusangKing</title>
 </head>
 <body>
@@ -115,6 +120,7 @@
       <p class="disclaimer">Phase 3 market data uses raw daily OHLC consistently for portfolio valuation and indicators. The automated schedule runs after Bursa close on weekdays. Verify market-sensitive decisions against Bursa or your broker.</p>
     </main>
   </div>
+  <script src="/pwa.js" defer></script>
   <script src="/manage.js" defer></script>
 </body>
 </html>
