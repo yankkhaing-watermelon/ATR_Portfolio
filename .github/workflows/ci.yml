@@ -17,6 +17,7 @@ jobs:
         run: |
           node --check worker/index.js
           node --check worker/index-v4.js
+          node --check worker/index-v4-fix.js
       - name: Check PWA scripts
         run: |
           node --check public/app.js
