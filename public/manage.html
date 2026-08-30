@@ -17,15 +17,15 @@
         <div class="brand"><div class="mark">↗<span>MK</span></div><div><b>Bursa MusangKing</b><small>ATR Portfolio · Management Console</small></div></div>
         <div class="actions"><button id="theme" aria-label="Toggle theme">☀</button><button class="primary" id="back">← Portfolio</button></div>
       </div>
-      <div class="status"><span><i></i><b id="manage-status">Checking D1…</b></span><time id="manage-version">Phase 2B</time></div>
+      <div class="status"><span><i></i><b id="manage-status">Checking D1…</b></span><time id="manage-version">Phase 3</time></div>
     </header>
 
     <main class="manage-main">
       <section class="manage-hero">
         <div>
-          <span class="eyebrow">PHASE 2B</span>
-          <h1>Portfolio setup & transactions</h1>
-          <p>Import your opening portfolio, then record future buys, sells, cash movements and dividends. Protected writes require your Cloudflare ADMIN_TOKEN.</p>
+          <span class="eyebrow">PHASE 3</span>
+          <h1>Portfolio & market-data control</h1>
+          <p>Manage the D1 portfolio and synchronize completed Bursa daily prices, ATR14 and moving averages. Protected writes require your Cloudflare ADMIN_TOKEN.</p>
         </div>
         <div class="lock-state" id="lock-state"><b>Checking…</b><span>Protected writes</span></div>
       </section>
@@ -52,11 +52,27 @@
       </section>
 
       <section class="manage-card setup-card">
-        <div class="manage-card-head"><div><span class="step">3</span><h2>Opening portfolio setup</h2></div><span class="pill">One-time import</span></div>
+        <div class="manage-card-head"><div><span class="step">3</span><h2>Bursa market-data sync</h2></div><span class="pill good">Phase 3</span></div>
+        <p class="muted">Fetch raw daily OHLC history for every current Bursa holding, calculate ATR14 and MA10/20/50/200, save the latest history to D1, and replace RM0 current prices with the latest available completed daily close.</p>
+        <div class="summary-grid phase3-summary">
+          <div><span>Provider</span><b>Yahoo raw OHLC</b></div>
+          <div><span>History</span><b>Up to 260 sessions</b></div>
+          <div><span>Automatic schedule</span><b>Weekdays 6:20 pm MYT</b></div>
+          <div><span>Last sync</span><b id="market-last-sync">Not run yet</b></div>
+        </div>
+        <div class="button-row split">
+          <div class="notice market-note">This first Phase 3 build updates only counters already in your portfolio. It does not scan the whole Bursa universe.</div>
+          <button class="primary-btn" id="sync-market">↻ Sync market data now</button>
+        </div>
+        <div id="market-sync-result" class="activity-list"><div class="empty-small">No market-data sync has been run from this browser yet.</div></div>
+      </section>
+
+      <section class="manage-card setup-card">
+        <div class="manage-card-head"><div><span class="step">4</span><h2>Opening portfolio setup</h2></div><span class="pill">One-time import</span></div>
         <p class="muted">Use this for the portfolio you already own today. It sets opening cash and imports current positions without inventing historical buy transactions.</p>
         <div class="setup-top">
           <label class="field"><span>Opening cash balance (RM)</span><input id="opening-cash" type="number" min="0" step="0.01" value="0"></label>
-          <div class="setup-note">Current positions should use your actual share quantity and average cost. Current price may be entered now and will later be replaced by automated market data.</div>
+          <div class="setup-note">Current positions should use your actual share quantity and average cost. Phase 3 will replace zero/manual current prices with synchronized completed-close market data.</div>
         </div>
         <div class="holdings-table-wrap">
           <table class="holdings-table">
@@ -69,7 +85,7 @@
 
       <section class="manage-grid lower-grid">
         <article class="manage-card">
-          <div class="manage-card-head"><div><span class="step">4</span><h2>Record transaction</h2></div><span class="pill">Live D1</span></div>
+          <div class="manage-card-head"><div><span class="step">5</span><h2>Record transaction</h2></div><span class="pill">Live D1</span></div>
           <label class="field"><span>Type</span><select id="tx-type"><option>BUY</option><option>SELL</option><option>DEPOSIT</option><option>WITHDRAWAL</option><option>DIVIDEND</option><option>ADJUSTMENT</option></select></label>
           <div id="trade-fields" class="form-grid">
             <label class="field"><span>Bursa code</span><input id="tx-code" placeholder="e.g. 1155"></label>
@@ -90,13 +106,13 @@
         </article>
 
         <article class="manage-card">
-          <div class="manage-card-head"><div><span class="step">5</span><h2>Recent activity</h2></div><button class="mini-btn" id="reload-activity">Refresh</button></div>
+          <div class="manage-card-head"><div><span class="step">6</span><h2>Recent activity</h2></div><button class="mini-btn" id="reload-activity">Refresh</button></div>
           <div id="recent-activity" class="activity-list"><div class="empty-small">No transactions yet.</div></div>
         </article>
       </section>
 
       <section class="result-bar" id="result-bar" aria-live="polite"><span>Ready.</span></section>
-      <p class="disclaimer">Opening positions are a starting-state import. Future BUY/SELL/cash transactions are written to D1 and update the portfolio ledger. Market prices remain manual until the market-data phase is connected.</p>
+      <p class="disclaimer">Phase 3 market data uses raw daily OHLC consistently for portfolio valuation and indicators. The automated schedule runs after Bursa close on weekdays. Verify market-sensitive decisions against Bursa or your broker.</p>
     </main>
   </div>
   <script src="/manage.js" defer></script>
