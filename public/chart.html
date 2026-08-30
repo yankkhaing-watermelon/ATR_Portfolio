@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071625"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/manage.css">
+<title>Chart Review · ATR Portfolio</title>
+</head>
+<body><div class="shell manage-shell">
+<header class="topbar"><div class="topline"><div class="brand"><div class="mark">↗<span>MK</span></div><div><b>Bursa MusangKing</b><small>Phase 6 · Charts & Review</small></div></div><div class="actions"><button onclick="location.href='/'">← Portfolio</button><button onclick="location.href='/signals.html'">⚑ Signals</button><button id="theme">☀</button></div></div><div class="status"><span><i></i><b id="status">Loading…</b></span><time id="version">Phase 6</time></div></header>
+<main class="manage-main">
+<section class="manage-hero"><div><span class="eyebrow">PHASE 6</span><h1>Chart & Review</h1><p>Completed-close price history with moving averages, ATR risk levels, tracked peak and historical signal markers.</p></div><div class="lock-state"><b id="risk-state">—</b><span>Current risk</span></div></section>
+<section class="manage-card setup-card"><div class="manage-card-head"><div><span class="step">1</span><h2>Select holding</h2></div><span class="pill" id="date-pill">—</span></div><div class="form-grid"><label class="field"><span>Holding</span><select id="code"></select></label><label class="field"><span>Window</span><select id="days"><option value="60">60 sessions</option><option value="120" selected>120 sessions</option><option value="180">180 sessions</option><option value="260">260 sessions</option></select></label></div><button class="primary-btn full" id="load">↻ Load chart</button></section>
+<section class="manage-card setup-card"><div class="manage-card-head"><div><span class="step">2</span><h2>Price & ATR review</h2></div><span class="pill">Completed close</span></div><canvas id="chart" height="360" style="width:100%;max-width:100%;background:var(--surface2);border-radius:14px"></canvas><div class="summary-grid" id="metrics" style="margin-top:12px"></div><div class="notice" id="reason">—</div></section>
+<section class="manage-card setup-card"><div class="manage-card-head"><div><span class="step">3</span><h2>Signal history</h2></div><span class="pill" id="signal-count">0</span></div><div class="activity-list" id="signals"></div></section>
+<div class="result-bar" id="result"><span>Ready.</span></div>
+</main></div><script src="/chart.js" defer></script></body></html>
