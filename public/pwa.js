@@ -69,6 +69,27 @@
     panel.querySelector(".pwa-got-it").addEventListener("click", close);
   }
 
+  // Treat the PWA's major pages like tabs, not separate browser pages.
+  // Using replace() prevents every Dashboard/Analytics/Risk/Daily hop from
+  // adding another history entry, so Android Back exits after one press
+  // instead of walking through the whole session.
+  const topLevelPages = new Set([
+    "/", "/index.html", "/decision.html", "/daily.html", "/reviews.html",
+    "/analytics.html", "/chart.html", "/signals.html", "/risk.html", "/manage.html"
+  ]);
+  document.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button || button.id === "pwa-install") return;
+    const raw = button.getAttribute("onclick") || "";
+    const match = raw.match(/location\.href\s*=\s*['\"]([^'\"]+)['\"]/);
+    if (!match) return;
+    const target = new URL(match[1], location.href);
+    if (target.origin !== location.origin || !topLevelPages.has(target.pathname)) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    location.replace(target.href);
+  }, true);
+
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", async () => {
       try {
