@@ -28,6 +28,7 @@ jobs:
         run: |
           node --check public/app.js
           node --check public/app-v4.js
+          node --check public/quick-trade.js
           node --check public/manage.js
           node --check public/phase3-ui.js
           node --check public/risk.js
