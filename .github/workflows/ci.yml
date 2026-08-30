@@ -21,6 +21,9 @@ jobs:
           node --check worker/index-v5.js
           node --check worker/index-v6.js
           node --check worker/index-v7.js
+          node --check worker/index-v8.js
+          node --check worker/index-v9.js
+          node --check worker/index-v10.js
       - name: Check PWA scripts
         run: |
           node --check public/app.js
@@ -31,3 +34,7 @@ jobs:
           node --check public/signals.js
           node --check public/chart.js
           node --check public/analytics.js
+          node --check public/pwa.js
+          node --check public/decision.js
+          node --check public/daily.js
+          node --check public/reviews.js
