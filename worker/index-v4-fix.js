@@ -1,6 +1,6 @@
 import phase4 from "./index-v4.js";
 
-const VERSION = "4.0.1";
+const VERSION = "4.0.2";
 
 const json = (data, status = 200) => new Response(JSON.stringify(data), {
   status,
@@ -37,7 +37,11 @@ async function stableRiskRead(request, env, ctx) {
       version: VERSION,
       phase: 4,
       engine: health.risk_engine || {},
-      data: rows.results || []
+      data: (rows.results || []).map(row => ({
+        ...row,
+        name: row.name || row.company_name || row.code,
+        sector: row.sector || ""
+      }))
     });
   } catch (error) {
     return json({
