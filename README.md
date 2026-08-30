@@ -18,13 +18,36 @@ Static assets are configured in `wrangler.jsonc`.
 
 Installable PWA shell, responsive Bursa MusangKing interface, navigation, light/dark theme and Cloudflare Worker asset deployment.
 
-### Phase 2A — complete
+### Phase 2 — complete
 
-Cloudflare D1 portfolio foundation with automatic schema initialization and live read APIs.
+Cloudflare D1 portfolio foundation, opening portfolio import, protected BUY / SELL / cash transactions, cash ledger, watchlist, signal history and journal storage.
 
-D1-backed records include holdings, transactions, cash ledger, watchlist, signal events, price/ATR snapshots, risk snapshots, portfolio snapshots, journal notes and settings.
+### Phase 3 — complete
 
-Read APIs:
+Portfolio market-data sync for current Bursa holdings using raw daily OHLC data. Up to 260 daily sessions are stored in D1 with ATR14 and MA10/20/50/200. The weekday Cloudflare cron runs at 6:20 pm MYT.
+
+### Phase 4 — ATR risk & sell-signal engine
+
+The deployed Worker entry point is `worker/index-v4.js`. It extends the Phase 3 service without duplicating the portfolio and market-data implementation.
+
+Risk rules (`atr-risk-v1`):
+
+- automatic initial floor = average cost − 2 ATR14
+- Watch = tracked peak − 1.5 ATR14, or a completed close below MA10
+- Partial = tracked peak − 2 ATR14
+- ATR trailing stop = tracked peak − 3 ATR14
+- active sell stop = highest of manual hard stop, automatic initial floor and ATR trailing stop
+
+The risk engine runs automatically after successful market-data synchronization and after the scheduled weekday refresh. It stores current risk levels on holdings, daily `risk_snapshots`, portfolio heat snapshots and state-change events in `signal_events`.
+
+New Phase 4 APIs:
+
+- `GET /api/risk`
+- `POST /api/risk/run` — protected by `ADMIN_TOKEN`
+
+The main PWA uses `public/app-v4.js`, and `/risk.html` provides a dedicated risk control console. Partial and Sell states are alerts only; the application does not place broker orders automatically.
+
+## Core APIs
 
 - `GET /api/health`
 - `GET /api/state`
@@ -33,30 +56,12 @@ Read APIs:
 - `GET /api/transactions`
 - `GET /api/signals`
 - `GET /api/market`
+- `POST /api/market/sync`
+- `POST /api/market/sync-one`
+- `GET /api/risk`
+- `POST /api/risk/run`
 
-### Phase 2B — complete
-
-`/manage.html` provides a protected management console for opening cash, existing-position imports, BUY/SELL transactions, deposits, withdrawals, dividends and adjustments.
-
-Protected writes require the Cloudflare `ADMIN_TOKEN` secret. The token is not embedded in the application or GitHub and is kept only in browser session storage after the user enters it in the management console.
-
-### Phase 3 — Bursa market-data engine
-
-Phase 3 synchronizes market data only for counters currently held in the portfolio.
-
-- Raw daily OHLC is used consistently for valuation and indicators.
-- Yahoo Finance Bursa symbols (`CODE.KL`) are the Phase 3 provider.
-- Up to 260 recent sessions are stored in D1.
-- ATR14 uses Wilder smoothing.
-- MA10, MA20, MA50 and MA200 are calculated from raw closes.
-- Current portfolio prices and MA10 are refreshed from the latest stored daily bar.
-- Portfolio value and equity are recalculated after each sync.
-- Manual sync: `POST /api/market/sync` with `Authorization: Bearer ADMIN_TOKEN`.
-- Single-counter sync: `POST /api/market/sync-one`.
-- Automatic Cloudflare Cron sync: weekdays at `10:20 UTC` (`18:20 MYT`).
-- `/manage.html` includes a Phase 3 market-data control panel and per-counter sync results.
-
-The main portfolio interface does not fall back to fabricated demo holdings.
+Protected writes require the Cloudflare `ADMIN_TOKEN` secret. The token is never embedded in GitHub or the PWA and is kept only in browser session storage after the user enters it.
 
 ## Local preview
 
