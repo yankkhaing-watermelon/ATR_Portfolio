@@ -16,5 +16,8 @@
       "database_name": "atr-portfolio-db",
       "database_id": "41f73187-8d16-4794-913f-dc68179b085f"
     }
-  ]
+  ],
+  "triggers": {
+    "crons": ["20 10 * * 1-5"]
+  }
 }
