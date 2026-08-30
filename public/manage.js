@@ -133,14 +133,14 @@ async function syncMarketData() {
 function addRow(values = {}) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
-    <td><input data-field="code" maxlength="16" placeholder="1155" value="${values.code || ""}"></td>
-    <td><input data-field="name" class="company" placeholder="Company name" value="${values.name || ""}"></td>
-    <td><input data-field="sector" class="sector" placeholder="Sector" value="${values.sector || ""}"></td>
-    <td><input data-field="shares" type="number" min="0" step="1" placeholder="0" value="${values.shares || ""}"></td>
-    <td><input data-field="avg_cost" type="number" min="0" step="0.001" placeholder="0.000" value="${values.avg_cost || ""}"></td>
-    <td><input data-field="current_price" type="number" min="0" step="0.001" placeholder="0.000" value="${values.current_price || ""}"></td>
-    <td><input data-field="hard_stop" type="number" min="0" step="0.001" placeholder="Optional" value="${values.hard_stop || ""}"></td>
-    <td><button class="row-remove" type="button" title="Remove row">×</button></td>`;
+    <td data-label="Code"><input data-field="code" maxlength="16" placeholder="1155" value="${values.code || ""}"></td>
+    <td data-label="Company"><input data-field="name" class="company" placeholder="Company name" value="${values.name || ""}"></td>
+    <td data-label="Sector"><input data-field="sector" class="sector" placeholder="Sector" value="${values.sector || ""}"></td>
+    <td data-label="Shares"><input data-field="shares" type="number" min="0" step="1" placeholder="0" value="${values.shares || ""}"></td>
+    <td data-label="Average cost"><input data-field="avg_cost" type="number" min="0" step="0.001" placeholder="0.000" value="${values.avg_cost || ""}"></td>
+    <td data-label="Current price"><input data-field="current_price" type="number" min="0" step="0.001" placeholder="0.000" value="${values.current_price || ""}"></td>
+    <td data-label="Hard stop"><input data-field="hard_stop" type="number" min="0" step="0.001" placeholder="Optional" value="${values.hard_stop || ""}"></td>
+    <td><button class="row-remove" type="button" title="Remove row">× Remove</button></td>`;
   tr.querySelector(".row-remove").onclick = () => tr.remove();
   $("opening-rows").appendChild(tr);
 }
