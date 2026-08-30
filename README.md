@@ -2,14 +2,15 @@
 
 Mobile-first Bursa Malaysia portfolio, ATR risk and sell-signal terminal.
 
-## Cloudflare Pages
+## Cloudflare Workers Builds
 
-- Framework preset: `None`
-- Build command: leave blank
-- Build output directory: `public`
+- Project name: `atr-portfolio`
 - Production branch: `main`
+- Build command: leave blank
+- Deploy command: `npx wrangler deploy`
+- Root path: `/`
 
-Phase 1 contains the installable PWA interface with demonstration data. Cloudflare D1 and live portfolio APIs are added in Phase 2.
+Static assets are configured in `wrangler.jsonc`. Phase 1 contains the installable PWA interface with demonstration data. Cloudflare D1 and live portfolio APIs are added in Phase 2.
 
 ## Local preview
 
