@@ -18,22 +18,11 @@ Static assets are configured in `wrangler.jsonc`.
 
 Installable PWA shell, responsive Bursa MusangKing interface, navigation, light/dark theme and Cloudflare Worker asset deployment.
 
-### Phase 2 — D1 portfolio foundation
+### Phase 2A — complete
 
-The Worker now self-initializes the D1 schema on first API access, so a separate manual migration command is not required for the deployed Worker.
+Cloudflare D1 portfolio foundation with automatic schema initialization and live read APIs.
 
-D1-backed records include:
-
-- holdings
-- transactions
-- cash ledger
-- watchlist
-- signal events
-- price snapshots with ATR14 and moving averages
-- risk snapshots
-- portfolio snapshots
-- journal notes
-- settings
+D1-backed records include holdings, transactions, cash ledger, watchlist, signal events, price/ATR snapshots, risk snapshots, portfolio snapshots, journal notes and settings.
 
 Read APIs:
 
@@ -45,9 +34,19 @@ Read APIs:
 - `GET /api/signals`
 - `GET /api/market`
 
-Protected write APIs remain disabled unless the optional Cloudflare `ADMIN_TOKEN` secret is configured. The browser never embeds an admin secret.
+### Phase 2B — portfolio setup & transactions
 
-The Phase 2 interface no longer falls back to fabricated demo holdings. An empty D1 portfolio is shown as an empty live portfolio.
+`/manage.html` provides a protected management console for:
+
+- opening cash setup
+- importing existing portfolio positions without inventing historical trades
+- recording BUY / SELL transactions
+- recording deposits, withdrawals, dividends and adjustments
+- reviewing the current D1 portfolio summary and recent activity
+
+Protected writes require the Cloudflare `ADMIN_TOKEN` secret. The token is not embedded in the application or GitHub and is kept only in browser session storage after the user enters it in the management console.
+
+The main portfolio interface does not fall back to fabricated demo holdings. An empty D1 portfolio is shown as an empty live portfolio.
 
 ## Local preview
 
