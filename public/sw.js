@@ -1,5 +1,5 @@
-const CACHE = "atr-portfolio-v8";
-const SHELL = ["/", "/index.html", "/styles.css", "/app-v4.js", "/manage.html", "/manage.css", "/manage.js", "/risk.html", "/risk.js", "/signals.html", "/signals.js", "/chart.html", "/chart.js", "/manifest.webmanifest", "/icon.svg"];
+const CACHE = "atr-portfolio-v9";
+const SHELL = ["/", "/index.html", "/styles.css", "/app-v4.js", "/manage.html", "/manage.css", "/manage.js", "/risk.html", "/risk.js", "/signals.html", "/signals.js", "/chart.html", "/chart.js", "/analytics.html", "/analytics.js", "/manifest.webmanifest", "/icon.svg"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener("activate", event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch", event => {
